@@ -73,7 +73,7 @@ function Login({ onSwitchToRegister }) {
               <label style={styles.label}>อีเมล (Email):</label>
               <input
                 type="email"
-                placeholder="user@example.com"
+                placeholder="user@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -205,3 +205,4 @@ const styles = {
 };
 
 export default Login;
+

@@ -22,7 +22,6 @@ function AdminDashboard({ onLogout }) {
   const [userSearch, setUserSearch] = useState("");
   const [editingUser, setEditingUser] = useState(null);
 
-  // ✅ ตรวจจับขนาดหน้าจอ (Mobile Detection)
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
@@ -285,7 +284,6 @@ function AdminDashboard({ onLogout }) {
                           alignItems: "start",
                         }}
                       >
-                        {/* ✅ แก้ไข: คลิกที่รูปใน Mobile Card เพื่อขยายดูรูปได้ */}
                         {item.photoUrl && (
                           <img
                             src={item.photoUrl}
@@ -364,7 +362,6 @@ function AdminDashboard({ onLogout }) {
                           style={{ borderBottom: "1px solid #eee" }}
                         >
                           <td style={styles.td}>
-                            {/* ✅ แก้ไข: คลิกที่รูปในตาราง (Desktop) เพื่อขยายดูรูปได้ */}
                             {item.photoUrl ? (
                               <img
                                 src={item.photoUrl}

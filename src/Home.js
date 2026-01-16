@@ -52,12 +52,12 @@ function Home({ onLogout, onGoToBorrow, onGoToReturn, onGoToHistory }) {
     }
   };
 
-  // ✅ ปุ่มแอดเพื่อน: เพื่อนแต่ละคนกดจะไปที่บอทเพื่อรับข้อความได้
+
   const handleAddFriend = () => {
     window.open("https://line.me/R/ti/p/@378ctbjr", "_blank");
   };
 
-  // ✅ ปุ่มลงทะเบียน: เพื่อนแต่ละคนกด ระบบจะดึงรหัสตัว U ของ "คนนั้น" มาเก็บให้เอง
+  
   const handleLineRegister = async () => {
     const user = auth.currentUser;
     if (!user) return;
@@ -70,7 +70,7 @@ function Home({ onLogout, onGoToBorrow, onGoToReturn, onGoToHistory }) {
       }
 
       const profile = await liff.getProfile();
-      const lineUserId = profile.userId; // ดึงรหัสตัว U ของคนใช้ปัจจุบัน
+      const lineUserId = profile.userId; 
 
       const userRef = doc(db, "users", user.uid);
       await updateDoc(userRef, { lineUserId: lineUserId });
@@ -254,3 +254,4 @@ const styles = {
 };
 
 export default Home;
+

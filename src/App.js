@@ -6,7 +6,7 @@ import Home from "./Home";
 import BorrowBook from "./BorrowBook";
 import ReturnBook from "./ReturnBook";
 import History from "./History";
-import AdminDashboard from "./AdminDashboard"; // ✅ 1. Import
+import AdminDashboard from "./AdminDashboard"; 
 import { auth, db } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
@@ -27,11 +27,11 @@ export default function App() {
           const data = docSnap.data();
           setUserData(data);
 
-          // ✅ เช็คว่าเป็น Admin หรือไม่?
+          
           if (data.role === "admin") {
-            setCurrentScreen("admin"); // ไปหน้าแอดมิน
+            setCurrentScreen("admin"); 
           } else {
-            setCurrentScreen("home"); // ไปหน้าปกติ
+            setCurrentScreen("home"); 
           }
         } else {
           setCurrentScreen("home");
@@ -83,7 +83,7 @@ export default function App() {
         <History onBack={() => setCurrentScreen("home")} userId={user?.uid} />
       )}
 
-      {/* ✅ หน้า Admin Dashboard */}
+      
       {currentScreen === "admin" && (
         <AdminDashboard onLogout={() => setCurrentScreen("login")} />
       )}

@@ -1,10 +1,10 @@
-// Import the functions you need from the SDKs you need
+
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage"; // ✅ เพิ่ม Storage สำหรับเก็บรูป
+import { getStorage } from "firebase/storage"; 
 
-// Your web app's Firebase configuration
+
 const firebaseConfig = {
   apiKey: "AIzaSyDlj8Zn31ZdlEjXKA8xiR-tTJDmzIP8Upo",
   authDomain: "nicnon-library.firebaseapp.com",
@@ -14,13 +14,14 @@ const firebaseConfig = {
   appId: "1:884589356108:web:c892360ec7142b270180e9",
 };
 
-// Initialize Firebase
+
 const app = initializeApp(firebaseConfig);
 
-// สร้างตัวแปรสำหรับใช้งาน Service ต่างๆ
-const auth = getAuth(app); // ระบบล็อกอิน
-const db = getFirestore(app); // ฐานข้อมูล
-const storage = getStorage(app); // ✅ ระบบเก็บรูปภาพ
+
+const auth = getAuth(app); 
+const db = getFirestore(app); 
+const storage = getStorage(app); 
 
 // ส่งออกไปให้ไฟล์อื่นใช้
 export { auth, db, storage };
+

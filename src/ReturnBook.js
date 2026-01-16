@@ -11,13 +11,13 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "./firebase";
 import "./styles.css";
 
-// 📍 พิกัดจุดคืนหนังสือ (วิทยาลัยเทคนิคนนทบุรี)
+
 const LIBRARY_LOCATION = {
   latitude: 14.10508,
   longitude: 100.32193,
 };
 
-// ✅ ปรับกลับเป็น 50 เมตร (ระยะจริง)
+
 const ALLOWED_RADIUS = 50;
 
 function ReturnBook({ onBack, userId }) {
@@ -28,7 +28,7 @@ function ReturnBook({ onBack, userId }) {
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef(null);
 
-  // ดึงรายการหนังสือที่ยืมอยู่
+  
   useEffect(() => {
     const fetchBorrowedBooks = async () => {
       try {
@@ -50,7 +50,7 @@ function ReturnBook({ onBack, userId }) {
     fetchBorrowedBooks();
   }, [userId]);
 
-  // สูตรคำนวณระยะทาง (Haversine Formula)
+  
   const getDistanceFromLatLonInM = (lat1, lon1, lat2, lon2) => {
     var R = 6371;
     var dLat = deg2rad(lat2 - lat1);
@@ -78,13 +78,13 @@ function ReturnBook({ onBack, userId }) {
   const handleReturn = async (e) => {
     e.preventDefault();
 
-    // เช็คความพร้อมเบื้องต้น
+   
     if (!selectedBook) return alert("📚 กรุณาเลือกหนังสือที่จะคืนก่อนครับ");
     if (!image) return alert("📸 กรุณาถ่ายรูปหนังสือเพื่อยืนยันสภาพครับ");
 
     setIsLoading(true);
 
-    // 1. เช็ค GPS
+    
     if (!navigator.geolocation) {
       setIsLoading(false);
       return alert("❌ อุปกรณ์ของคุณไม่รองรับ GPS");
@@ -95,7 +95,7 @@ function ReturnBook({ onBack, userId }) {
         const userLat = position.coords.latitude;
         const userLon = position.coords.longitude;
 
-        // คำนวณระยะห่างจริง
+        
         const distance = getDistanceFromLatLonInM(
           userLat,
           userLon,
@@ -105,7 +105,7 @@ function ReturnBook({ onBack, userId }) {
 
         const distanceInt = Math.round(distance);
 
-        // ❌ ตรวจสอบระยะทาง (ต้องไม่เกิน 50 เมตร)
+        
         if (distance > ALLOWED_RADIUS) {
           setIsLoading(false);
           alert(
@@ -113,12 +113,12 @@ function ReturnBook({ onBack, userId }) {
               distanceInt - ALLOWED_RADIUS
             } เมตร)\n\nกรุณาเดินเข้าไปในระยะ 50 เมตรครับ`
           );
-          return; // จบการทำงาน ไม่บันทึก
+          return; 
         }
 
-        // ✅ ถ้าระยะผ่าน -> เริ่มบันทึก
+        
         try {
-          // อัปโหลดรูป (ส่งไฟล์เต็ม ไม่ย่อ แก้ค้าง)
+          
           const storageRef = ref(
             storage,
             `return_photos/${Date.now()}_${userId}.jpg`
@@ -126,7 +126,7 @@ function ReturnBook({ onBack, userId }) {
           await uploadBytes(storageRef, image);
           const photoUrl = await getDownloadURL(storageRef);
 
-          // อัปเดตสถานะใน Firestore
+         
           const transactionRef = doc(db, "transactions", selectedBook.id);
           await updateDoc(transactionRef, {
             status: "returned",
@@ -165,7 +165,7 @@ function ReturnBook({ onBack, userId }) {
       <div style={styles.card}>
         <h2 style={{ color: "#333", marginBottom: "20px" }}>↩️ คืนหนังสือ</h2>
 
-        {/* เลือกหนังสือ */}
+       
         <div style={{ textAlign: "left", marginBottom: "20px" }}>
           <label style={styles.label}>เลือกรายการที่จะคืน:</label>
           {borrowedBooks.length === 0 ? (
@@ -202,7 +202,7 @@ function ReturnBook({ onBack, userId }) {
           )}
         </div>
 
-        {/* ถ่ายรูป + ปุ่มยืนยัน */}
+       
         {(selectedBook || borrowedBooks.length > 0) && (
           <>
             <div style={styles.stepBox}>
@@ -236,13 +236,13 @@ function ReturnBook({ onBack, userId }) {
               />
             </div>
 
-            {/* ปุ่มยืนยัน (กดได้ตลอด) */}
+            
             <button
               onClick={handleReturn}
               style={{
                 ...styles.button,
                 marginTop: "20px",
-                // ถ้ายังไม่เลือกของ จะเป็นสีเทาเข้ม
+               
                 backgroundColor: selectedBook && image ? "#0056b3" : "#6c757d",
               }}
             >
@@ -354,3 +354,4 @@ const styles = {
 };
 
 export default ReturnBook;
+

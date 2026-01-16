@@ -5,15 +5,15 @@ import { db, storage } from "./firebase";
 import "./styles.css";
 
 function BorrowBook({ onBack, userId, userData }) {
-  // ✅ State สำหรับเก็บข้อมูล
-  const [bookName, setBookName] = useState(""); // ชื่อหนังสือ
-  const [returnDate, setReturnDate] = useState(""); // วันกำหนดคืน
-  const [image, setImage] = useState(null); // ไฟล์รูป
-  const [previewUrl, setPreviewUrl] = useState(null); // URL รูปตัวอย่าง
-  const [isLoading, setIsLoading] = useState(false); // สถานะโหลด
+
+  const [bookName, setBookName] = useState(""); 
+  const [returnDate, setReturnDate] = useState(""); 
+  const [image, setImage] = useState(null); 
+  const [previewUrl, setPreviewUrl] = useState(null); 
+  const [isLoading, setIsLoading] = useState(false); 
   const fileInputRef = useRef(null);
 
-  // ฟังก์ชันเมื่อเลือกรูป (แสดงตัวอย่างทันที)
+  
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
       const file = e.target.files[0];
@@ -22,11 +22,11 @@ function BorrowBook({ onBack, userId, userData }) {
     }
   };
 
-  // ฟังก์ชันกดยืนยันการยืม
+  
   const handleBorrow = async (e) => {
     e.preventDefault();
 
-    // 1. ตรวจสอบข้อมูลว่าครบไหม
+    
     if (!bookName.trim()) return alert("📚 กรุณาระบุชื่อหนังสือด้วยครับ");
     if (!image) return alert("📸 กรุณาถ่ายรูปหนังสือที่จะยืมด้วยครับ");
     if (!returnDate) return alert("⏰ กรุณาระบุเวลาที่จะคืนด้วยครับ");
@@ -34,8 +34,7 @@ function BorrowBook({ onBack, userId, userData }) {
     setIsLoading(true);
 
     try {
-      // 2. อัปโหลดรูปภาพ (ส่งไฟล์ต้นฉบับเลย ไม่ย่อ เพื่อแก้ปัญหาค้าง)
-      // ตั้งชื่อไฟล์: borrow_photos/เวลาปัจจุบัน_รหัสUser.jpg
+      
       const storageRef = ref(
         storage,
         `borrow_photos/${Date.now()}_${userId}.jpg`
@@ -43,20 +42,20 @@ function BorrowBook({ onBack, userId, userData }) {
       await uploadBytes(storageRef, image);
       const photoUrl = await getDownloadURL(storageRef);
 
-      // 3. บันทึกข้อมูลลงฐานข้อมูล (Firestore)
+      
       await addDoc(collection(db, "transactions"), {
         userId: userId,
         studentId: userData?.studentId || "unknown",
         userName: userData?.name || "unknown",
-        bookName: bookName, // ✅ บันทึกชื่อหนังสือ
-        photoUrl: photoUrl, // ลิงก์รูปภาพ
-        borrowDate: new Date().toISOString(), // วันที่ยืม (ตอนนี้)
-        returnDate: returnDate, // วันที่กำหนดคืน
-        status: "borrowed", // สถานะ: กำลังยืม
+        bookName: bookName, 
+        photoUrl: photoUrl, 
+        borrowDate: new Date().toISOString(), 
+        returnDate: returnDate, 
+        status: "borrowed", 
       });
 
       alert("✅ ยืมหนังสือสำเร็จ!");
-      onBack(); // กลับไปหน้าหลัก
+      onBack(); 
     } catch (error) {
       console.error("Error borrowing:", error);
       alert("❌ เกิดข้อผิดพลาด: " + error.message);
@@ -65,7 +64,7 @@ function BorrowBook({ onBack, userId, userData }) {
     }
   };
 
-  // หน้าจอตอนกำลังบันทึก (หมุนๆ)
+
   if (isLoading) {
     return (
       <div style={styles.loadingOverlayFull}>
@@ -80,7 +79,7 @@ function BorrowBook({ onBack, userId, userData }) {
       <div style={styles.card}>
         <h2 style={{ color: "#333" }}>📸 ยืมหนังสือ</h2>
 
-        {/* พื้นที่แสดงรูป / กดถ่ายรูป */}
+        
         <div
           onClick={() => fileInputRef.current.click()}
           style={styles.imagePreviewArea}
@@ -95,18 +94,18 @@ function BorrowBook({ onBack, userId, userData }) {
           )}
         </div>
 
-        {/* ตัว Input File ที่ซ่อนอยู่ */}
+        
         <input
           type="file"
           accept="image/*"
-          capture="environment" // เปิดกล้องหลัง
+          capture="environment" 
           ref={fileInputRef}
           style={{ display: "none" }}
           onChange={handleImageChange}
         />
 
         <form onSubmit={handleBorrow} style={styles.form}>
-          {/* ✅ ช่องกรอกชื่อหนังสือ */}
+          
           <div style={styles.inputGroup}>
             <label style={styles.label}>ชื่อหนังสือ:</label>
             <input
@@ -119,7 +118,7 @@ function BorrowBook({ onBack, userId, userData }) {
             />
           </div>
 
-          {/* ช่องเลือกวันเวลาคืน */}
+         
           <div style={styles.inputGroup}>
             <label style={styles.label}>กำหนดคืนเมื่อไหร่:</label>
             <input
@@ -131,12 +130,12 @@ function BorrowBook({ onBack, userId, userData }) {
             />
           </div>
 
-          {/* ปุ่มยืนยัน */}
+         
           <button type="submit" style={styles.button}>
             ยืนยันการยืม
           </button>
 
-          {/* ปุ่มยกเลิก */}
+          
           <button
             type="button"
             onClick={onBack}
@@ -154,7 +153,7 @@ function BorrowBook({ onBack, userId, userData }) {
   );
 }
 
-// Styles (สไตล์ตกแต่ง)
+
 const styles = {
   container: {
     display: "flex",
@@ -241,3 +240,4 @@ const styles = {
 };
 
 export default BorrowBook;
+

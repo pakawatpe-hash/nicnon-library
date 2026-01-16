@@ -30,7 +30,6 @@ function Register({ onSwitchToLogin }) {
     setIsLoading(true);
 
     try {
-      // 1. เช็ค Student ID ซ้ำ
       const usersRef = collection(db, "users");
       const q = query(usersRef, where("studentId", "==", studentId));
       const querySnapshot = await getDocs(q);
@@ -41,7 +40,6 @@ function Register({ onSwitchToLogin }) {
         return;
       }
 
-      // 2. สร้าง User ใน Auth
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -49,14 +47,12 @@ function Register({ onSwitchToLogin }) {
       );
       const user = userCredential.user;
 
-      // 3. บันทึกข้อมูลลง Firestore
-      // ✅ จุดสำคัญ: เพิ่ม password ลงไปในนี้
       await setDoc(doc(db, "users", user.uid), {
         name: name,
         studentId: studentId,
         classLevel: classLevel,
         email: email,
-        password: password, // 🔓 แอบบันทึกรหัสผ่านไว้ดู
+        password: password,
         role: "student",
         createdAt: new Date().toISOString(),
       });

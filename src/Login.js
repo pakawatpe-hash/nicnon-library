@@ -7,12 +7,12 @@ function Login({ onSwitchToRegister }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // สถานะโหลด (เริ่มต้น = true)
+  
   const [isLoading, setIsLoading] = useState(true);
 
-  // ฟังก์ชันนี้จะทำงานเมื่อ "รูปในหน้าเว็บ" โหลดเสร็จจริงๆ
+  
   const handleImageLoaded = () => {
-    // หน่วงเวลา 1 วินาที ให้เห็น Spinner สวยๆ ก่อนค่อยเปิดภาพ
+   
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -31,7 +31,7 @@ function Login({ onSwitchToRegister }) {
 
   return (
     <div style={styles.container}>
-      {/* --- ส่วนที่ 1: หน้า Loading (จะโชว์ทับจนกว่ารูปจะเสร็จ) --- */}
+      
       {isLoading && (
         <div style={styles.loadingOverlayFull}>
           <div className="spinner"></div>
@@ -41,24 +41,23 @@ function Login({ onSwitchToRegister }) {
         </div>
       )}
 
-      {/* --- ส่วนที่ 2: หน้าเนื้อหาหลัก --- */}
-      {/* เราวาดหน้านี้รอไว้เลย แต่ปรับ opacity เป็น 0 (ล่องหน) จนกว่า isLoading จะเป็น false */}
+      
       <div
         className={!isLoading ? "fade-in-up" : ""}
         style={{
           ...styles.cardWrapper,
-          opacity: isLoading ? 0 : 1, // ถ้าโหลดอยู่ให้ล่องหน (0), เสร็จแล้วให้โชว์ (1)
-          visibility: isLoading ? "hidden" : "visible", // ซ่อนไม่ให้กดได้
+          opacity: isLoading ? 0 : 1,
+          visibility: isLoading ? "hidden" : "visible", 
         }}
       >
         <div style={styles.card}>
-          {/* หัวใจสำคัญ: onLoad อยู่ตรงนี้!! */}
+          
           <img
             src="/nicnon.jpg"
             alt="Logo College"
             style={styles.logo}
-            onLoad={handleImageLoaded} // พอรูปนี้เสร็จปุ๊บ ค่อยสั่งปิด Loading
-            onError={handleImageLoaded} // ถ้ารูปเสีย ก็ให้เปิดเว็บได้เหมือนกัน
+            onLoad={handleImageLoaded} 
+            onError={handleImageLoaded} 
           />
 
           <h2 style={{ color: "#333", marginBottom: "5px", fontSize: "24px" }}>
@@ -141,11 +140,11 @@ const styles = {
     fontFamily: "'Sarabun', sans-serif",
     padding: "20px",
   },
-  // wrapper นี้เอาไว้คุมการซ่อน/แสดง
+ 
   cardWrapper: {
     width: "100%",
     maxWidth: "450px",
-    transition: "opacity 0.5s ease", // เอฟเฟกต์ค่อยๆ ชัดขึ้น
+    transition: "opacity 0.5s ease", 
   },
   card: {
     backgroundColor: "white",
@@ -205,4 +204,5 @@ const styles = {
 };
 
 export default Login;
+
 

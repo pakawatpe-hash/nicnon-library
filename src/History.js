@@ -7,7 +7,7 @@ function History({ onBack, userId }) {
   const [transactions, setTransactions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // ดึงข้อมูลประวัติทั้งหมดของ User นี้
+
   useEffect(() => {
     const fetchHistory = async () => {
       try {
@@ -17,7 +17,7 @@ function History({ onBack, userId }) {
         );
         const querySnapshot = await getDocs(q);
 
-        // แปลงข้อมูล + เรียงลำดับจาก "ใหม่ไปเก่า"
+       
         const data = querySnapshot.docs
           .map((doc) => ({
             id: doc.id,
@@ -36,7 +36,7 @@ function History({ onBack, userId }) {
     fetchHistory();
   }, [userId]);
 
-  // ฟังก์ชันแปลงวันที่ให้เป็นภาษาไทยสวยๆ
+  
   const formatDate = (isoString) => {
     if (!isoString) return "-";
     const date = new Date(isoString);
@@ -62,8 +62,7 @@ function History({ onBack, userId }) {
     <div style={styles.container} className="fade-in-up">
       <div style={styles.cardFullHeight}>
         {" "}
-        {/* ใช้ Card แบบเต็มจอเพื่อให้ scroll ได้ */}
-        {/* หัวข้อ */}
+        
         <div style={styles.headerRow}>
           <button onClick={onBack} style={styles.backButton}>
             ⬅️ กลับ
@@ -71,7 +70,7 @@ function History({ onBack, userId }) {
           <h2 style={{ margin: 0, color: "#333" }}>ประวัติการยืม-คืน</h2>
           <div style={{ width: "40px" }}></div> {/* จัด layout ให้ตรงกลาง */}
         </div>
-        {/* รายการประวัติ */}
+       
         <div style={styles.listContainer}>
           {transactions.length === 0 ? (
             <p
@@ -82,7 +81,7 @@ function History({ onBack, userId }) {
           ) : (
             transactions.map((item) => (
               <div key={item.id} style={styles.historyItem}>
-                {/* ส่วนหัว: ชื่อหนังสือ + สถานะ */}
+                
                 <div style={styles.itemHeader}>
                   <span style={styles.bookName}>
                     📖 {item.bookName || "ไม่ระบุชื่อ"}
@@ -98,7 +97,7 @@ function History({ onBack, userId }) {
                   </span>
                 </div>
 
-                {/* รายละเอียดวันที่ */}
+              
                 <div style={styles.itemDetails}>
                   <p>
                     📅 <strong>วันที่ยืม:</strong> {formatDate(item.borrowDate)}
@@ -126,7 +125,7 @@ function History({ onBack, userId }) {
 }
 
 const styles = {
-  // Reuse สไตล์เดิม
+  
   loadingOverlayFull: {
     position: "fixed",
     top: 0,
@@ -148,7 +147,7 @@ const styles = {
     fontFamily: "'Sarabun', sans-serif",
   },
 
-  // สไตล์ใหม่สำหรับหน้า History
+  
   cardFullHeight: {
     backgroundColor: "white",
     width: "100%",
@@ -179,7 +178,7 @@ const styles = {
   },
   listContainer: { padding: "20px", overflowY: "auto" },
 
-  // กล่องรายการแต่ละอัน
+ 
   historyItem: {
     backgroundColor: "#fff",
     border: "1px solid #eee",
@@ -196,7 +195,7 @@ const styles = {
   },
   bookName: { fontSize: "16px", fontWeight: "bold", color: "#333" },
 
-  // ป้ายสถานะ
+  
   statusGreen: {
     fontSize: "12px",
     backgroundColor: "#e6f4ea",
@@ -218,3 +217,4 @@ const styles = {
 };
 
 export default History;
+

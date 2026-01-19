@@ -149,11 +149,12 @@ function AdminDashboard({ onLogout }) {
     }
   };
 
+  // ✅ ปรับเปลี่ยนสถานะเป็นภาษาไทย
   const checkStatus = (item) => {
-    if (item.status === "returned") return "returned";
+    if (item.status === "returned") return "คืนแล้ว";
     const now = new Date();
     const returnDate = new Date(item.returnDate);
-    return now > returnDate ? "overdue" : "borrowed";
+    return now > returnDate ? "เกินกำหนด" : "กำลังยืม";
   };
 
   const formatDate = (iso) =>
@@ -169,8 +170,12 @@ function AdminDashboard({ onLogout }) {
     const matchesFilter =
       transFilter === "all" ||
       (transFilter === "overdue"
-        ? status === "overdue"
-        : status === transFilter);
+        ? status === "เกินกำหนด"
+        : transFilter === "borrowed"
+        ? status === "กำลังยืม"
+        : transFilter === "returned"
+        ? status === "คืนแล้ว"
+        : false);
     const searchLower = transSearch.toLowerCase();
     return (
       matchesFilter &&
@@ -246,27 +251,10 @@ function AdminDashboard({ onLogout }) {
           {viewMode === "transactions" && (
             <>
               <div style={styles.filterBar}>
-                {["all", "borrowed", "returned", "overdue"].map((f) => (
-                  <button
-                    key={f}
-                    onClick={() => setTransFilter(f)}
-                    style={
-                      transFilter === f
-                        ? f === "overdue"
-                          ? styles.tabActiveRed
-                          : styles.tabActive
-                        : styles.tab
-                    }
-                  >
-                    {f === "all"
-                      ? "ทั้งหมด"
-                      : f === "borrowed"
-                      ? "ยืม"
-                      : f === "returned"
-                      ? "คืน"
-                      : "⚠️ เกิน"}
-                  </button>
-                ))}
+                <button onClick={() => setTransFilter("all")} style={transFilter === "all" ? styles.tabActive : styles.tab}>ทั้งหมด</button>
+                <button onClick={() => setTransFilter("borrowed")} style={transFilter === "borrowed" ? styles.tabActive : styles.tab}>กำลังยืม</button>
+                <button onClick={() => setTransFilter("returned")} style={transFilter === "returned" ? styles.tabActive : styles.tab}>คืนแล้ว</button>
+                <button onClick={() => setTransFilter("overdue")} style={transFilter === "overdue" ? styles.tabActiveRed : styles.tab}>⚠️ เกินกำหนด</button>
               </div>
 
               <div
@@ -284,6 +272,7 @@ function AdminDashboard({ onLogout }) {
                           alignItems: "start",
                         }}
                       >
+                        {/* ✅ เพิ่มฟังก์ชันจิ้มดูรูปในมือถือ */}
                         {item.photoUrl && (
                           <img
                             src={item.photoUrl}
@@ -320,21 +309,17 @@ function AdminDashboard({ onLogout }) {
                         </div>
                         <span
                           style={
-                            checkStatus(item) === "returned"
+                            checkStatus(item) === "คืนแล้ว"
                               ? styles.badgeGreen
-                              : checkStatus(item) === "overdue"
+                              : checkStatus(item) === "เกินกำหนด"
                               ? styles.badgeRed
                               : styles.badgeYellow
                           }
                         >
-                          {checkStatus(item) === "returned"
-                            ? "คืนแล้ว"
-                            : checkStatus(item) === "overdue"
-                            ? "เกินกำหนด"
-                            : "กำลังยืม"}
+                          {checkStatus(item)}
                         </span>
                       </div>
-                      {checkStatus(item) === "overdue" && (
+                      {checkStatus(item) === "เกินกำหนด" && (
                         <button
                           onClick={() => sendLineMessagingAPI(item)}
                           style={styles.btnLineMobile}
@@ -362,6 +347,7 @@ function AdminDashboard({ onLogout }) {
                           style={{ borderBottom: "1px solid #eee" }}
                         >
                           <td style={styles.td}>
+                            {/* ✅ เพิ่มฟังก์ชันจิ้มดูรูปในคอม */}
                             {item.photoUrl ? (
                               <img
                                 src={item.photoUrl}
@@ -387,9 +373,9 @@ function AdminDashboard({ onLogout }) {
                           <td style={styles.td}>
                             <span
                               style={
-                                checkStatus(item) === "returned"
+                                checkStatus(item) === "คืนแล้ว"
                                   ? styles.badgeGreen
-                                  : checkStatus(item) === "overdue"
+                                  : checkStatus(item) === "เกินกำหนด"
                                   ? styles.badgeRed
                                   : styles.badgeYellow
                               }
@@ -398,7 +384,7 @@ function AdminDashboard({ onLogout }) {
                             </span>
                           </td>
                           <td style={styles.td}>
-                            {checkStatus(item) === "overdue" && (
+                            {checkStatus(item) === "เกินกำหนด" && (
                               <button
                                 onClick={() => sendLineMessagingAPI(item)}
                                 style={styles.btnLine}

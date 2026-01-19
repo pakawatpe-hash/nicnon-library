@@ -149,7 +149,7 @@ function AdminDashboard({ onLogout }) {
     }
   };
 
-  // ✅ ปรับเปลี่ยนสถานะเป็นภาษาไทย
+  
   const checkStatus = (item) => {
     if (item.status === "returned") return "คืนแล้ว";
     const now = new Date();
@@ -272,7 +272,7 @@ function AdminDashboard({ onLogout }) {
                           alignItems: "start",
                         }}
                       >
-                        {/* ✅ เพิ่มฟังก์ชันจิ้มดูรูปในมือถือ */}
+                        
                         {item.photoUrl && (
                           <img
                             src={item.photoUrl}
@@ -347,7 +347,7 @@ function AdminDashboard({ onLogout }) {
                           style={{ borderBottom: "1px solid #eee" }}
                         >
                           <td style={styles.td}>
-                            {/* ✅ เพิ่มฟังก์ชันจิ้มดูรูปในคอม */}
+                            
                             {item.photoUrl ? (
                               <img
                                 src={item.photoUrl}
@@ -844,3 +844,4 @@ const styles = {
 };
 
 export default AdminDashboard;
+
